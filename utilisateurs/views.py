@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login as log, logout
 from django.contrib.auth.models import User
 from django.views.decorators.http import require_http_methods
+from vues import *
 
 # Create your views here.
 
@@ -9,18 +10,21 @@ from django.views.decorators.http import require_http_methods
 def login(request):
     
     if request.method == "GET" :
-        return render(request, 'vues/constacts.html')
+        print(request.method)
+        return render(request, 'utilisateurs/login.html')
     else :
         login = request.POST['login']
         password = request.POST['password']
-        
-        user = authenticate(request, username=login, password=password)
-        
+        print(login+' => '+password)
+        user = authenticate(username=login, password=password)
+
         if user is not None :
-            login(request, user)
+            log(request, user)
             
         else :
-            pass
+            return render(request, 'utilisateurs/login.html' , {
+                "error": "invalid login or password"
+            })
 
 
 def logout(request):
