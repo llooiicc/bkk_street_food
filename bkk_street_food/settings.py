@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'articles',
     'utilisateurs',
     'vues',
-    'common_styles'
+    'common_styles',
+    'map'
 ]
 
 MIDDLEWARE_CLASSES = [

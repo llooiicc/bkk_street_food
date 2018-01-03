@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf.urls import include, url
+from map import views as map
 
 urlpatterns = [
     url(r'admin/', admin.site.urls),
-    url(r'login/', include('utilisateurs.urls') , name='login')
+    url(r'login/', include('utilisateurs.urls') , name='login'),
+    url(r'map/home', map.home),
+    url(r'^map/bounds.*', map.set_bounds_map, name='bounds')
 ]
