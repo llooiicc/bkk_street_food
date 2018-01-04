@@ -65,7 +65,11 @@ var bounds = null;
 				   "lngsw": lngSW
 			   },
 			   success: function(data) {
-					var a = 1;
+					console.log(JSON.stringify(data));
+					$.each(data , function (k,v) {
+						console.log(v[0]);
+						putMarker(v[0],v[1]);
+                    })
 			   }
 			});
 		});
@@ -99,8 +103,11 @@ var bounds = null;
     }
     
 
-    
-    function getMap(){
-    	return map;
-    }
+    function putMarker(lat,lng){
+    	var marker = new google.maps.Marker({
+          position: {lat: lat, lng: lng},
+          map: map
+        });
+
+	}
   
