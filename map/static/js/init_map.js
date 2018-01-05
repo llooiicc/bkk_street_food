@@ -68,7 +68,10 @@ var bounds = null;
 					console.log(JSON.stringify(data));
 					$.each(data , function (k,v) {
 						console.log(v[0]);
-						putMarker(v[0],v[1]);
+						var lat = v[0];
+						var lng = v[1];
+						var articleId = k;
+						putMarker(lat, lng, articleId);
                     })
 			   }
 			});
@@ -81,33 +84,45 @@ var bounds = null;
  * 
  *    	G E O L O C A T I O N
  * 
- *************************************************************************************/	
-	/** Try HTML5 geolocation.  **/
+ *************************************************************************************/
+function locate() {
+// Try HTML5 geolocation.
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
 
-        infoWindow.setPosition(pos);
-        infoWindow.setContent('Location found.');
-        map.setCenter(pos);
-        console.log(pos);
-      }, function() {
-        handleLocationError(true, infoWindow, map.getCenter());
-      });
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            map.setCenter(pos);
+        }, function () {
+            handleLocationError(true, infoWindow, map.getCenter());
+        });
     } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
     }
-    
+}
 
-    function putMarker(lat,lng){
-    	var marker = new google.maps.Marker({
-          position: {lat: lat, lng: lng},
-          map: map
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+    }
+
+
+    function putMarker(lat, lng, articleId) {
+        var marker = new google.maps.Marker({
+            position: {lat: lat, lng: lng},
+			articleDatas: {
+            	id: articleId
+			},
+            map: map
+        }).addListener('click', function () {
+			console.log("article id = "+articleId);
         });
 
-	}
-  
+    }
