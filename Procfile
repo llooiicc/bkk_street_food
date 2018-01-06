@@ -1,1 +1,1 @@
-web: gunicorn bkk_street_food.wsgi
+web: gunicorn bkk_street_food.wsgi --log-file -
