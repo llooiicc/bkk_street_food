@@ -8,20 +8,11 @@ class Article(models.Model):
     contenu = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
     valide = models.BooleanField(default=False)
-    
-    
-class Position(models.Model):
-    
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    lat = models.FloatField()
-    lng = models.FloatField()
-
+    lat = models.FloatField(default=0)
+    lng = models.FloatField(default=0)
 
 class Commentaire(models.Model):
     
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     contenu = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
-    
-
-

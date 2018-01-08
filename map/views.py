@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse , JsonResponse
-from articles.models import Position
+from articles.models import Article
+from django.db.models import Q
 
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
@@ -18,12 +19,7 @@ def set_bounds_map(request):
     lng_sw = float(request.POST['lngsw'])
     positions = {}
 
-    for p in Position.objects.all():
-        if p.lat >= lat_sw and p.lat <= lat_ne:
-            print('lat ok')
-            if p.lng >= lng_sw and p.lng <= lng_ne:
-                print('lng ok')
-                print(p.id)
-                positions[p.article_id] = [p.lat, p.lng]
-
+    articles = Article.objects.filter(Q(lat__gte=lat_sw) & Q(lat__lte=lat_ne)).filter(Q(lng__gte=lng_sw) & Q(lng__lte=lng_ne))
+    for a in articles:
+        positions[a.id] = {"lat": a.lat ,"lng": a.lng, "titre": a.titre}
     return JsonResponse(positions)

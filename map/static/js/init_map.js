@@ -67,11 +67,11 @@ var bounds = null;
 			   success: function(data) {
 					console.log(JSON.stringify(data));
 					$.each(data , function (k,v) {
-						console.log(v[0]);
-						var lat = v[0];
-						var lng = v[1];
+						var lat = v["lat"];
+						var lng = v["lng"];
+						var titre = v["titre"];
 						var articleId = k;
-						putMarker(lat, lng, articleId);
+						putMarker(lat, lng, articleId, titre);
                     })
 			   }
 			});
@@ -114,15 +114,21 @@ function locate() {
     }
 
 
-    function putMarker(lat, lng, articleId) {
+    function putMarker(lat, lng, articleId, titre) {
+
+		var infowindow = new google.maps.InfoWindow({
+	    	content: "<h1>qsdSFSD</h1>"
+  		});
+
         var marker = new google.maps.Marker({
             position: {lat: lat, lng: lng},
+			label: titre,
 			articleDatas: {
             	id: articleId
 			},
             map: map
-        }).addListener('click', function () {
-			console.log("article id = "+articleId);
+        }).addListener('mouseover', function () {
+			infowindow.open(this.map, this.marker);
         });
 
     }
